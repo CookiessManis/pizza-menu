@@ -76,7 +76,7 @@ function Footer() {
   return (
     <footer className="footer">
       {isOpen ? (
-        <Order close={close} />
+        <Order close={close} open={open} />
       ) : (
         <p>
           we're happy to welcome you between {open}:00 and {close}:00
@@ -86,10 +86,12 @@ function Footer() {
   );
 }
 
-function Order(props) {
+function Order({ close, open }) {
   return (
     <div className="order">
-      <p>We're open until {props.close}:00. Come visit us or order online.</p>
+      <p>
+        We're from {open}:00 until {close}:00. Come visit us or order online.
+      </p>
       <button className="btn">Order</button>
     </div>
   );
@@ -102,43 +104,34 @@ function Menu() {
       <h2>Our Menu</h2>
 
       {numPizza > 0 ? (
-        <ul className="pizzas">
-          {pizzas.map((pizza) => (
-            <Pizza pizzaObj={pizza} key={pizza.name}></Pizza>
-            // <Pizza name={pizza.name}></Pizza>
-          ))}
-        </ul>
+        <>
+          <p>
+            Authentic Italian Cuisine. 6 creative dishes to choose from. All
+            from our stone oven, all organic, all delicious
+          </p>
+          <ul className="pizzas">
+            {pizzas.map((pizza) => (
+              <Pizza pizzaObj={pizza} key={pizza.name}></Pizza>
+            ))}
+          </ul>
+        </>
       ) : (
         <p>We're still working on our menu. Please comeback later :)</p>
       )}
-
-      {/* <Pizza
-        name="Pizza Spinach"
-        ingredients="Tomato,mozarella,margherita and ricotta"
-        photoName="pizzas/spinaci.jpg"
-        price="10"
-      />
-      <Pizza
-        name="Pizza FUnghi"
-        ingredients="Tomato, Musroom"
-        photoName="pizzas/funghi.jpg"
-        price={20}
-      /> */}
     </main>
   );
 }
 
-function Pizza(props) {
-  console.log(props);
-  if (props.pizzaObj.soldOut) return null;
+function Pizza({ pizzaObj }) {
+  // if (pizzaObj.soldOut) return null;
 
   return (
-    <li className="pizza">
-      <img src={props.pizzaObj.photoName} alt="{props.pizzaObj.name}"></img>
+    <li className={`pizza ${pizzaObj.soldOut ? "sold-out" : ""}`}>
+      <img src={pizzaObj.photoName} alt="{pizzaObj.name}"></img>
       <div>
-        <h3>{props.pizzaObj.name}</h3>
-        <p>{props.pizzaObj.ingredients}</p>
-        <span>{props.pizzaObj.price + 3}k</span>
+        <h3>{pizzaObj.name}</h3>
+        <p>{pizzaObj.ingredients}</p>
+        <span>{pizzaObj.soldOut ? "SOLD OUT" : pizzaObj.price}</span>
       </div>
     </li>
   );
